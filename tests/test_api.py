@@ -1,6 +1,5 @@
 import json
 import pytest
-from fastapi.testclient import TestClient
 
 from app import app
 import api.routes as routes
@@ -35,6 +34,10 @@ def patch_groq_client(monkeypatch):
 
 @pytest.fixture()
 def client():
+    # Import TestClient here to avoid import-time errors during test collection
+    # in environments where httpx2 may not yet be installed.
+    from fastapi.testclient import TestClient
+
     return TestClient(app)
 
 
