@@ -73,3 +73,19 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Env
+.env
+
+# Editor
+.vscode/
+*.pyc
+.venv/
+venv/
+*.log
+

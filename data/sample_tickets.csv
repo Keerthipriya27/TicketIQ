@@ -1,0 +1,11 @@
+Ticket ID,Customer Ticket,Expected Category,Priority
+1,"Payment failed after successful transaction",Billing,High
+2,"Unable to login to my account",Account Management,High
+3,"Application crashes when opening",Technical Support,High
+4,"Need refund for duplicate payment",Billing,Medium
+5,"Forgot my password",Account Management,Medium
+6,"Please add dark mode feature",Feature Request,Low
+7,"Profile update is not saving",Technical Support,Medium
+8,"Need invoice copy",Billing,Low
+9,"How can I change my email address?",Account Management,Low
+10,"Application loading very slowly",Technical Support,Medium
