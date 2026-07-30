@@ -1,10 +1,19 @@
 import axios from 'axios';
-import Config from 'react-native-config';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+let Config: any = {};
+if (Platform.OS !== 'web') {
+  try {
+    Config = require('react-native-config').default;
+  } catch (e) {
+    Config = {};
+  }
+}
 
 // Get base URL with fallbacks
 const getBaseUrl = (): string => {
-  return Config.API_BASE_URL || 'http://10.0.2.2:8000';
+  return Config?.API_BASE_URL || 'http://127.0.0.1:8000';
 };
 
 const api = axios.create({

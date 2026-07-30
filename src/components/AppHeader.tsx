@@ -25,8 +25,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       <View style={styles.content}>
         <View style={styles.leftContainer}>
           {showBack && (
-            <TouchableOpacity onPress={onBackPress} style={styles.backButton} activeOpacity={0.7}>
-              <Icon name="arrow-left" size={24} color={theme.colors.textPrimary} />
+            <TouchableOpacity onPress={onBackPress} style={styles.backButton} activeOpacity={0.8}>
+              <Icon name="arrow-left" size={22} color={theme.colors.textPrimary} />
             </TouchableOpacity>
           )}
         </View>
@@ -38,7 +38,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </View>
 
         <View style={styles.rightContainer}>
-          {rightComponent || <View style={{ width: 24 }} />}
+          {rightComponent || <View style={{ width: 36 }} />}
         </View>
       </View>
     </View>
@@ -47,13 +47,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.88)',
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F3F9',
+    borderBottomColor: 'rgba(226, 232, 240, 0.8)',
     ...theme.shadows.sm,
   },
   content: {
-    height: 56,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -75,16 +75,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   backButton: {
-    padding: 6,
-    borderRadius: theme.radius.sm,
-    backgroundColor: '#F3F4F6',
+    width: 38,
+    height: 38,
+    borderRadius: theme.radius.round,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleText: {
     fontSize: theme.typography.sizes.lg,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
 });
 

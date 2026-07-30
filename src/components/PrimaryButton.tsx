@@ -9,7 +9,7 @@ import {
   Animated,
   StyleProp,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '../theme';
 
 interface PrimaryButtonProps {
@@ -35,7 +35,9 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
-      toValue: 0.96,
+      toValue: 0.94,
+      friction: 4,
+      tension: 140,
       useNativeDriver: true,
     }).start();
   };
@@ -43,22 +45,24 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   const handlePressOut = () => {
     Animated.spring(scaleAnim, {
       toValue: 1,
+      friction: 4,
+      tension: 100,
       useNativeDriver: true,
     }).start();
   };
 
   const getGradientColors = () => {
     if (disabled) {
-      return ['#E5E7EB', '#E5E7EB'];
+      return ['#CBD5E1', '#94A3B8'];
     }
     switch (variant) {
       case 'secondary':
-        return theme.colors.secondaryGradient;
+        return ['#3B82F6', '#06B6D4'];
       case 'danger':
-        return ['#EF4444', '#DC2626'];
+        return ['#F43F5E', '#E11D48'];
       case 'primary':
       default:
-        return theme.colors.primaryGradient;
+        return ['#6366F1', '#8B5CF6', '#EC4899'];
     }
   };
 
@@ -68,7 +72,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        activeOpacity={0.9}
+        activeOpacity={0.92}
         disabled={disabled || loading}
         style={[styles.buttonContainer, style]}
       >
@@ -91,25 +95,26 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    borderRadius: theme.radius.lg,
+    borderRadius: theme.radius.round,
     overflow: 'hidden',
-    height: 52,
+    height: 54,
     justifyContent: 'center',
     marginVertical: theme.spacing.sm,
-    ...theme.shadows.sm,
+    ...theme.shadows.glow,
   },
   gradient: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: theme.spacing.xl,
+    paddingHorizontal: theme.spacing.xxl,
   },
   text: {
     color: '#FFFFFF',
     fontFamily: theme.typography.fontFamilyBold,
     fontSize: theme.typography.sizes.md,
-    fontWeight: theme.typography.weights.semibold,
-    letterSpacing: 0.5,
+    fontWeight: theme.typography.weights.heavy,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
   },
 });
 

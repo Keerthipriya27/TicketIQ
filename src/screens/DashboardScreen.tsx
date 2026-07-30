@@ -44,7 +44,6 @@ export const DashboardScreen = ({ navigation }: any) => {
       setUser(currentUser);
 
       const allTasks = await taskService.getTasks();
-      // Filter user specific tasks if necessary (here we mock for single user flow)
       setTasks(allTasks);
 
       const calculated = taskService.calculateStats(allTasks);
@@ -70,22 +69,18 @@ export const DashboardScreen = ({ navigation }: any) => {
 
   const getGreeting = () => {
     const hrs = new Date().getHours();
-    if (hrs < 12) {
-      return 'Good Morning ☀️';
-    }
-    if (hrs < 18) {
-      return 'Good Afternoon 🌤️';
-    }
+    if (hrs < 12) return 'Good Morning ☀️';
+    if (hrs < 18) return 'Good Afternoon 🌤️';
     return 'Good Evening 🌙';
   };
 
-  const recentTasks = tasks.slice(0, 3); // Get top 3 recent tasks
+  const recentTasks = tasks.slice(0, 3);
 
   if (loading && !refreshing) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={styles.loadingText}>Loading your planner...</Text>
+        <ActivityIndicator size="large" color="#6366F1" />
+        <Text style={styles.loadingText}>Initializing Workspace...</Text>
       </View>
     );
   }
@@ -94,53 +89,58 @@ export const DashboardScreen = ({ navigation }: any) => {
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[theme.colors.primary]} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#6366F1']} />}
       >
-        {/* Header Greeting */}
+        {/* Editorial Top Bar Header */}
         <View style={styles.header}>
           <View>
             <Text style={styles.greetingText}>{getGreeting()}</Text>
             <Text style={styles.userName}>{user?.name || 'Academic Student'}</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Profile')}>
-            <Avatar source={user?.avatarUrl} name={user?.name} size={50} />
+          <TouchableOpacity activeOpacity={0.85} onPress={() => navigation.navigate('Profile')}>
+            <View style={styles.avatarRing}>
+              <Avatar source={user?.avatarUrl} name={user?.name} size={54} />
+            </View>
           </TouchableOpacity>
         </View>
 
-        {/* Progress Overview Section */}
-        <Card style={styles.progressCard}>
+        {/* Hero Progress Bento Card */}
+        <Card glass style={styles.heroBentoCard}>
           <View style={styles.progressRow}>
             <View style={styles.progressTextColumn}>
-              <Text style={styles.progressTitle}>Today's Progress</Text>
+              <View style={styles.badgeLabel}>
+                <Text style={styles.badgeText}>TODAY'S WORKFLOW</Text>
+              </View>
+              <Text style={styles.progressTitle}>Academic Progress</Text>
               <Text style={styles.progressDescription}>
-                {stats.completedCount} of {stats.totalCount} tasks completed. Keep it up!
+                {stats.completedCount} of {stats.totalCount} tasks completed. Keep up the momentum!
               </Text>
             </View>
-            <ProgressRing percentage={stats.progressPercentage} size={90} strokeWidth={10} />
+            <ProgressRing percentage={stats.progressPercentage} size={105} strokeWidth={12} />
           </View>
         </Card>
 
-        {/* Stats Mini Grid */}
-        <View style={styles.statsGrid}>
-          <Card style={[styles.statsCard, { borderLeftWidth: 4, borderLeftColor: theme.colors.statusPending }]}>
-            <View style={styles.statIconContainer}>
-              <Icon name="clock-outline" size={24} color={theme.colors.statusPending} />
+        {/* Bento Stats Grid Composition */}
+        <View style={styles.bentoStatsGrid}>
+          <Card style={[styles.bentoStatCard, { borderTopColor: '#F59E0B', borderTopWidth: 4 }]}>
+            <View style={[styles.statIconBadge, { backgroundColor: '#FEF3C7' }]}>
+              <Icon name="clock-outline" size={22} color="#D97706" />
             </View>
             <Text style={styles.statNumber}>{stats.pendingCount}</Text>
             <Text style={styles.statLabel}>Pending</Text>
           </Card>
 
-          <Card style={[styles.statsCard, { borderLeftWidth: 4, borderLeftColor: theme.colors.statusInProgress }]}>
-            <View style={styles.statIconContainer}>
-              <Icon name="progress-clock" size={24} color={theme.colors.statusInProgress} />
+          <Card style={[styles.bentoStatCard, { borderTopColor: '#6366F1', borderTopWidth: 4 }]}>
+            <View style={[styles.statIconBadge, { backgroundColor: '#EEF2FF' }]}>
+              <Icon name="progress-clock" size={22} color="#6366F1" />
             </View>
             <Text style={styles.statNumber}>{stats.inProgressCount}</Text>
             <Text style={styles.statLabel}>In Progress</Text>
           </Card>
 
-          <Card style={[styles.statsCard, { borderLeftWidth: 4, borderLeftColor: theme.colors.statusCompleted }]}>
-            <View style={styles.statIconContainer}>
-              <Icon name="check-circle-outline" size={24} color={theme.colors.statusCompleted} />
+          <Card style={[styles.bentoStatCard, { borderTopColor: '#10B981', borderTopWidth: 4 }]}>
+            <View style={[styles.statIconBadge, { backgroundColor: '#D1FAE5' }]}>
+              <Icon name="check-circle-outline" size={22} color="#059669" />
             </View>
             <Text style={styles.statNumber}>{stats.completedCount}</Text>
             <Text style={styles.statLabel}>Completed</Text>
@@ -151,7 +151,7 @@ export const DashboardScreen = ({ navigation }: any) => {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recent Tasks</Text>
           <TouchableOpacity onPress={() => navigation.navigate('TaskList')}>
-            <Text style={styles.viewAllText}>View All</Text>
+            <Text style={styles.viewAllText}>View All Tasks →</Text>
           </TouchableOpacity>
         </View>
 
@@ -166,16 +166,16 @@ export const DashboardScreen = ({ navigation }: any) => {
           ))
         ) : (
           <Card style={styles.emptyCard}>
-            <Icon name="calendar-blank-outline" size={40} color={theme.colors.textMuted} />
-            <Text style={styles.emptyCardText}>No tasks planned. Tap "+" to start!</Text>
+            <Icon name="calendar-blank-outline" size={44} color={theme.colors.textMuted} />
+            <Text style={styles.emptyCardTitle}>Workspace Clean</Text>
+            <Text style={styles.emptyCardText}>No upcoming tasks planned. Tap "+" to create one!</Text>
           </Card>
         )}
         
-        {/* Extra spacing for FAB */}
         <View style={{ height: 80 }} />
       </ScrollView>
 
-      {/* Floating Add Task Button */}
+      {/* Floating Add Task CTA */}
       <FloatingButton onPress={() => navigation.navigate('AddTask')} />
     </SafeAreaView>
   );
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.md,
     fontSize: theme.typography.sizes.sm,
     color: theme.colors.textMuted,
-    fontFamily: theme.typography.fontFamily,
+    fontFamily: theme.typography.fontFamilyMedium,
   },
   header: {
     flexDirection: 'row',
@@ -209,23 +209,34 @@ const styles = StyleSheet.create({
     paddingTop: theme.spacing.xs,
   },
   greetingText: {
-    fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fontFamily,
+    fontSize: theme.typography.sizes.xs,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textMuted,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
   },
   userName: {
     fontSize: theme.typography.sizes.xxl,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
-    marginTop: 2,
+    marginTop: 4,
+    letterSpacing: -0.5,
   },
-  progressCard: {
-    padding: theme.spacing.lg,
-    borderWidth: 0,
+  avatarRing: {
+    padding: 3,
+    borderRadius: theme.radius.round,
     backgroundColor: '#FFFFFF',
-    marginBottom: theme.spacing.lg,
-    ...theme.shadows.md,
+    borderWidth: 2,
+    borderColor: '#6366F1',
+    ...theme.shadows.glow,
+  },
+  heroBentoCard: {
+    padding: theme.spacing.xl,
+    borderRadius: theme.radius.xl,
+    marginBottom: theme.spacing.xl,
+    ...theme.shadows.lg,
   },
   progressRow: {
     flexDirection: 'row',
@@ -234,49 +245,73 @@ const styles = StyleSheet.create({
   },
   progressTextColumn: {
     flex: 1,
-    paddingRight: theme.spacing.md,
+    paddingRight: theme.spacing.lg,
+  },
+  badgeLabel: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: theme.radius.round,
+    backgroundColor: '#EEF2FF',
+    marginBottom: 8,
+  },
+  badgeText: {
+    fontSize: 9,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.heavy,
+    color: '#6366F1',
+    letterSpacing: 1,
   },
   progressTitle: {
-    fontSize: theme.typography.sizes.md,
+    fontSize: theme.typography.sizes.xl,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.semibold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
     marginBottom: 6,
+    letterSpacing: -0.3,
   },
   progressDescription: {
     fontSize: theme.typography.sizes.sm,
     fontFamily: theme.typography.fontFamily,
-    color: theme.colors.textMuted,
-    lineHeight: 18,
+    color: theme.colors.textSecondary,
+    lineHeight: 20,
   },
-  statsGrid: {
+  bentoStatsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing.xl,
+    marginBottom: theme.spacing.xxl,
+    marginHorizontal: -4,
   },
-  statsCard: {
+  bentoStatCard: {
     flex: 1,
     marginHorizontal: 4,
     padding: theme.spacing.md,
     alignItems: 'center',
-    borderWidth: 0,
     backgroundColor: '#FFFFFF',
-    ...theme.shadows.sm,
+    borderRadius: theme.radius.xl,
+    ...theme.shadows.md,
   },
-  statIconContainer: {
-    marginBottom: 6,
+  statIconBadge: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   statNumber: {
-    fontSize: theme.typography.sizes.lg,
+    fontSize: theme.typography.sizes.xxl,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
   },
   statLabel: {
     fontSize: 11,
-    fontFamily: theme.typography.fontFamily,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.bold,
     color: theme.colors.textMuted,
     marginTop: 2,
+    letterSpacing: 0.5,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -285,32 +320,39 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   sectionTitle: {
-    fontSize: theme.typography.sizes.lg,
+    fontSize: theme.typography.sizes.xl,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
+    letterSpacing: -0.3,
   },
   viewAllText: {
     fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fontFamilyMedium,
-    fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.primary,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.bold,
+    color: '#6366F1',
   },
   emptyCard: {
     alignItems: 'center',
-    paddingVertical: theme.spacing.xl,
+    paddingVertical: theme.spacing.xxl,
     backgroundColor: '#FFFFFF',
     borderStyle: 'dashed',
-    borderWidth: 1.5,
-    borderColor: '#E5E7EB',
-    shadowOpacity: 0,
-    elevation: 0,
+    borderWidth: 2,
+    borderColor: '#CBD5E1',
+    borderRadius: theme.radius.xl,
+  },
+  emptyCardTitle: {
+    fontSize: theme.typography.sizes.md,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.bold,
+    color: theme.colors.textPrimary,
+    marginTop: theme.spacing.sm,
   },
   emptyCardText: {
-    fontSize: theme.typography.sizes.sm,
+    fontSize: theme.typography.sizes.xs,
     fontFamily: theme.typography.fontFamily,
     color: theme.colors.textMuted,
-    marginTop: theme.spacing.sm,
+    marginTop: 4,
   },
 });
 

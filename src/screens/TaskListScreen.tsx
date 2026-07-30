@@ -28,7 +28,6 @@ export const TaskListScreen = ({ navigation }: any) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | TaskStatus>('all');
   const [priorityFilter, setPriorityFilter] = useState<'all' | TaskPriority>('all');
@@ -54,21 +53,17 @@ export const TaskListScreen = ({ navigation }: any) => {
     }
   }, [isFocused]);
 
-  // Apply filters and search
   useEffect(() => {
     let result = [...tasks];
 
-    // Status filter
     if (statusFilter !== 'all') {
       result = result.filter((task) => task.status === statusFilter);
     }
 
-    // Priority filter
     if (priorityFilter !== 'all') {
       result = result.filter((task) => task.priority === priorityFilter);
     }
 
-    // Search query filter
     if (searchQuery.trim().length > 0) {
       const query = searchQuery.toLowerCase().trim();
       result = result.filter(
@@ -87,27 +82,25 @@ export const TaskListScreen = ({ navigation }: any) => {
   };
 
   const getHeaderRight = () => (
-    <TouchableOpacity onPress={() => navigation.navigate('AddTask')} style={styles.addHeaderBtn}>
-      <Icon name="plus" size={24} color={theme.colors.primary} />
+    <TouchableOpacity onPress={() => navigation.navigate('AddTask')} style={styles.addHeaderBtn} activeOpacity={0.8}>
+      <Icon name="plus" size={22} color="#6366F1" />
     </TouchableOpacity>
   );
 
   return (
     <SafeAreaView style={styles.container}>
       <AppHeader
-        title="My Tasks"
+        title="Tasks Feed"
         showBack
         onBackPress={() => navigation.goBack()}
         rightComponent={getHeaderRight()}
       />
 
-      {/* Search and Filters panel */}
       <View style={styles.searchFilterContainer}>
         <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
 
-        {/* Status filters */}
         <View style={styles.filterSection}>
-          <Text style={styles.filterLabel}>Status:</Text>
+          <Text style={styles.filterLabel}>STATUS</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterRow}>
             <Chip label="All" selected={statusFilter === 'all'} onPress={() => setStatusFilter('all')} />
             <Chip label="Pending" selected={statusFilter === 'pending'} onPress={() => setStatusFilter('pending')} />
@@ -116,40 +109,38 @@ export const TaskListScreen = ({ navigation }: any) => {
           </ScrollView>
         </View>
 
-        {/* Priority filters */}
         <View style={styles.filterSection}>
-          <Text style={styles.filterLabel}>Priority:</Text>
+          <Text style={styles.filterLabel}>PRIORITY</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterRow}>
             <Chip label="All" selected={priorityFilter === 'all'} onPress={() => setPriorityFilter('all')} />
             <Chip
               label="High"
               selected={priorityFilter === 'high'}
               onPress={() => setPriorityFilter('high')}
-              activeColor={theme.colors.priorityHighBg}
-              activeTextColor={theme.colors.priorityHigh}
+              activeColor="#FFE4E6"
+              activeTextColor="#F43F5E"
             />
             <Chip
               label="Medium"
               selected={priorityFilter === 'medium'}
               onPress={() => setPriorityFilter('medium')}
-              activeColor={theme.colors.priorityMediumBg}
-              activeTextColor={theme.colors.priorityMedium}
+              activeColor="#FEF3C7"
+              activeTextColor="#D97706"
             />
             <Chip
               label="Low"
               selected={priorityFilter === 'low'}
               onPress={() => setPriorityFilter('low')}
-              activeColor={theme.colors.priorityLowBg}
-              activeTextColor={theme.colors.priorityLow}
+              activeColor="#D1FAE5"
+              activeTextColor="#059669"
             />
           </ScrollView>
         </View>
       </View>
 
-      {/* Tasks List */}
       {loading && !refreshing ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <ActivityIndicator size="large" color="#6366F1" />
         </View>
       ) : (
         <FlatList
@@ -157,7 +148,7 @@ export const TaskListScreen = ({ navigation }: any) => {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContainer}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[theme.colors.primary]} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#6366F1']} />
           }
           renderItem={({ item }) => (
             <TaskCard
@@ -193,15 +184,18 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   addHeaderBtn: {
-    padding: 6,
-    borderRadius: theme.radius.sm,
-    backgroundColor: theme.colors.primaryLight,
+    width: 38,
+    height: 38,
+    borderRadius: theme.radius.round,
+    backgroundColor: '#EEF2FF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   searchFilterContainer: {
     padding: theme.spacing.lg,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: '#E2E8F0',
   },
   filterSection: {
     flexDirection: 'row',
@@ -209,10 +203,12 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
   },
   filterLabel: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textMuted,
-    width: 60,
+    width: 70,
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   filterRow: {

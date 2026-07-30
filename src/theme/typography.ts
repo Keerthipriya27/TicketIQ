@@ -4,17 +4,17 @@ export const typography = {
   fontFamily: Platform.select({
     ios: 'System',
     android: 'sans-serif',
-    default: 'System',
+    default: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   }),
   fontFamilyMedium: Platform.select({
     ios: 'System',
     android: 'sans-serif-medium',
-    default: 'System',
+    default: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   }),
   fontFamilyBold: Platform.select({
     ios: 'System',
-    android: 'sans-serif-medium', // Fallback or let weight do the work
-    default: 'System',
+    android: 'sans-serif-medium',
+    default: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   }),
   
   sizes: {
@@ -22,9 +22,10 @@ export const typography = {
     sm: 14,
     md: 16,
     lg: 18,
-    xl: 20,
-    xxl: 24,
-    huge: 32,
+    xl: 22,
+    xxl: 28,
+    huge: 38,
+    massive: 48,
   },
   
   weights: {
@@ -32,5 +33,6 @@ export const typography = {
     medium: '500' as const,
     semibold: '600' as const,
     bold: '700' as const,
+    heavy: '800' as const,
   },
 };

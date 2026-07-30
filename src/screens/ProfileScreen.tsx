@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../theme';
 import { authService } from '../services/authService';
@@ -57,26 +57,26 @@ export const ProfileScreen = ({ navigation }: any) => {
 
   const renderSettingItem = (icon: string, label: string, color = theme.colors.textPrimary, onPress?: () => void) => {
     return (
-      <TouchableOpacity style={styles.settingItem} onPress={onPress} activeOpacity={0.7} key={label}>
+      <TouchableOpacity style={styles.settingItem} onPress={onPress} activeOpacity={0.8} key={label}>
         <View style={styles.settingItemLeft}>
           <View style={styles.settingIconContainer}>
-            <Icon name={icon} size={22} color={theme.colors.primary} />
+            <Icon name={icon} size={22} color="#6366F1" />
           </View>
           <Text style={[styles.settingLabel, { color }]}>{label}</Text>
         </View>
-        <Icon name="chevron-right" size={20} color={theme.colors.textMuted} />
+        <Icon name="chevron-right" size={22} color={theme.colors.textMuted} />
       </TouchableOpacity>
     );
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppHeader title="Profile" showBack onBackPress={() => navigation.goBack()} />
+      <AppHeader title="Student Profile" showBack onBackPress={() => navigation.goBack()} />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Banner with Profile Info */}
         <LinearGradient
-          colors={theme.colors.primaryGradient as any}
+          colors={['#0F172A', '#1E1B4B', '#312E81'] as any}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.banner}
@@ -85,22 +85,24 @@ export const ProfileScreen = ({ navigation }: any) => {
         </LinearGradient>
 
         <View style={styles.avatarSection}>
-          <Avatar source={user?.avatarUrl} name={user?.name} size={90} style={styles.profileAvatar} />
+          <View style={styles.avatarRing}>
+            <Avatar source={user?.avatarUrl} name={user?.name} size={96} />
+          </View>
           <Text style={styles.profileName}>{user?.name || 'Academic Student'}</Text>
           <Text style={styles.profileEmail}>{user?.email || 'student@academy.edu'}</Text>
-          <Text style={styles.profileBio}>{user?.bio || 'No bio configured yet.'}</Text>
+          <Text style={styles.profileBio}>{user?.bio || 'Organizing assignments, research labs & exam deadlines.'}</Text>
         </View>
 
         {/* Statistics Grid */}
         <View style={styles.statsSection}>
-          <Text style={styles.sectionHeading}>My Statistics</Text>
+          <Text style={styles.sectionHeading}>ANALYTICS OVERVIEW</Text>
           <View style={styles.statsGrid}>
             <Card style={styles.statBox}>
               <Text style={styles.statValue}>{stats.totalCount}</Text>
               <Text style={styles.statLabel}>Tasks Created</Text>
             </Card>
             <Card style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.colors.statusCompleted }]}>
+              <Text style={[styles.statValue, { color: '#10B981' }]}>
                 {stats.completedCount}
               </Text>
               <Text style={styles.statLabel}>Completed</Text>
@@ -108,27 +110,27 @@ export const ProfileScreen = ({ navigation }: any) => {
           </View>
           <View style={styles.statsGrid}>
             <Card style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.colors.statusPending }]}>
+              <Text style={[styles.statValue, { color: '#F59E0B' }]}>
                 {stats.pendingCount}
               </Text>
               <Text style={styles.statLabel}>Pending</Text>
             </Card>
             <Card style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.colors.primary }]}>
+              <Text style={[styles.statValue, { color: '#6366F1' }]}>
                 {stats.progressPercentage}%
               </Text>
-              <Text style={styles.statLabel}>Completion Rate</Text>
+              <Text style={styles.statLabel}>Success Rate</Text>
             </Card>
           </View>
         </View>
 
         {/* Settings Options List */}
         <View style={styles.settingsSection}>
-          <Text style={styles.sectionHeading}>Settings</Text>
-          <Card style={styles.settingsCard}>
+          <Text style={styles.sectionHeading}>PREFERENCES</Text>
+          <Card glass style={styles.settingsCard}>
             {renderSettingItem('account-edit-outline', 'Edit Profile')}
             {renderSettingItem('bell-outline', 'Notification Preferences')}
-            {renderSettingItem('palette-outline', 'Theme customization')}
+            {renderSettingItem('palette-outline', 'Theme Customization')}
             {renderSettingItem('help-circle-outline', 'Help & Support')}
           </Card>
         </View>
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   banner: {
-    height: 120,
+    height: 140,
     width: '100%',
     position: 'relative',
   },
@@ -166,29 +168,31 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   avatarSection: {
     alignItems: 'center',
-    marginTop: -45,
+    marginTop: -52,
     paddingHorizontal: theme.spacing.lg,
-    marginBottom: theme.spacing.xl,
+    marginBottom: theme.spacing.xxl,
   },
-  profileAvatar: {
-    borderWidth: 4,
-    borderColor: '#FFFFFF',
-    ...theme.shadows.lg,
+  avatarRing: {
+    padding: 4,
+    borderRadius: 56,
+    backgroundColor: '#FFFFFF',
+    ...theme.shadows.glow,
   },
   profileName: {
-    fontSize: theme.typography.sizes.xl,
+    fontSize: theme.typography.sizes.xxl,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
     marginTop: theme.spacing.sm,
+    letterSpacing: -0.5,
   },
   profileEmail: {
     fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fontFamily,
+    fontFamily: theme.typography.fontFamilyMedium,
     color: theme.colors.textMuted,
     marginTop: 2,
   },
@@ -199,19 +203,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: theme.spacing.sm,
     paddingHorizontal: theme.spacing.xl,
-    lineHeight: 18,
+    lineHeight: 20,
   },
   statsSection: {
     paddingHorizontal: theme.spacing.lg,
-    marginBottom: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
   },
   sectionHeading: {
-    fontSize: theme.typography.sizes.sm,
+    fontSize: 10,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textMuted,
+    letterSpacing: 1,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
     marginBottom: theme.spacing.sm,
     paddingLeft: 4,
   },
@@ -223,60 +227,61 @@ const styles = StyleSheet.create({
   statBox: {
     flex: 1,
     marginHorizontal: 4,
-    paddingVertical: theme.spacing.md,
+    paddingVertical: theme.spacing.lg,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    borderWidth: 0,
-    ...theme.shadows.sm,
+    borderRadius: theme.radius.xl,
+    ...theme.shadows.md,
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 26,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
   },
   statLabel: {
     fontSize: 11,
-    fontFamily: theme.typography.fontFamily,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.bold,
     color: theme.colors.textMuted,
     marginTop: 4,
+    letterSpacing: 0.5,
   },
   settingsSection: {
     paddingHorizontal: theme.spacing.lg,
-    marginBottom: theme.spacing.xl,
+    marginBottom: theme.spacing.xxl,
   },
   settingsCard: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 0,
-    paddingVertical: theme.spacing.sm,
+    paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.md,
-    ...theme.shadows.sm,
+    borderRadius: theme.radius.xl,
+    ...theme.shadows.md,
   },
   settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: theme.spacing.md,
+    paddingVertical: theme.spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: '#F1F5F9',
   },
   settingItemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   settingIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: theme.colors.primaryLight,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#EEF2FF',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: theme.spacing.md,
   },
   settingLabel: {
     fontSize: theme.typography.sizes.md,
-    fontFamily: theme.typography.fontFamilyMedium,
-    fontWeight: theme.typography.weights.medium,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.semibold,
   },
   logoutBtn: {
     marginHorizontal: theme.spacing.xl,

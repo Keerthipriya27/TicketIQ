@@ -1,11 +1,12 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const { getDefaultConfig } = require('expo/metro-config');
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {};
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname);
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  'react-native-vector-icons': require.resolve('@expo/vector-icons'),
+  'react-native-vector-icons/MaterialCommunityIcons': require.resolve('@expo/vector-icons/MaterialCommunityIcons'),
+};
+
+module.exports = config;

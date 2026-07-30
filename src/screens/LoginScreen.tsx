@@ -66,14 +66,14 @@ export const LoginScreen = ({ navigation }: any) => {
       >
         <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
           <View style={styles.headerSection}>
-            <View style={styles.logoCircle}>
-              <Icon name="calendar-check" size={40} color={theme.colors.primary} />
+            <View style={styles.logoBadge}>
+              <Icon name="calendar-check" size={44} color="#6366F1" />
             </View>
-            <Text style={styles.welcomeTitle}>Welcome Back!</Text>
-            <Text style={styles.welcomeSubtitle}>Sign in to manage your study tasks</Text>
+            <Text style={styles.welcomeTitle}>Welcome Back</Text>
+            <Text style={styles.welcomeSubtitle}>Sign in to manage your academic productivity workflow</Text>
           </View>
 
-          <Card style={styles.loginCard}>
+          <Card glass style={styles.loginCard}>
             <Input
               label="Username"
               placeholder="e.g. alex_student"
@@ -81,7 +81,7 @@ export const LoginScreen = ({ navigation }: any) => {
               onChangeText={setUsername}
               error={errors.username}
               autoCapitalize="none"
-              icon={<Icon name="account-outline" size={20} color={theme.colors.textMuted} />}
+              icon={<Icon name="account-outline" size={20} color="#6366F1" />}
             />
 
             <Input
@@ -92,11 +92,11 @@ export const LoginScreen = ({ navigation }: any) => {
               error={errors.password}
               secureTextEntry
               autoCapitalize="none"
-              icon={<Icon name="lock-outline" size={20} color={theme.colors.textMuted} />}
+              icon={<Icon name="lock-outline" size={20} color="#6366F1" />}
             />
 
             <PrimaryButton
-              title="Sign In"
+              title="Sign In to Dashboard"
               onPress={handleLogin}
               loading={loading}
               style={styles.submitButton}
@@ -104,9 +104,9 @@ export const LoginScreen = ({ navigation }: any) => {
           </Card>
 
           <View style={styles.demoNotice}>
-            <Icon name="information-outline" size={16} color={theme.colors.textMuted} />
+            <Icon name="shield-check-outline" size={16} color={theme.colors.textMuted} />
             <Text style={styles.demoText}>
-              Mock login enabled. Enter any username and password to test.
+              Mock auth enabled. Type any username & password to enter.
             </Text>
           </View>
         </ScrollView>
@@ -125,57 +125,61 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingHorizontal: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.xl,
     justifyContent: 'center',
     paddingVertical: theme.spacing.huge,
   },
   headerSection: {
     alignItems: 'center',
-    marginBottom: theme.spacing.huge,
+    marginBottom: theme.spacing.xxl,
   },
-  logoCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  logoBadge: {
+    width: 86,
+    height: 86,
+    borderRadius: 43,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: theme.spacing.md,
-    ...theme.shadows.md,
+    marginBottom: theme.spacing.lg,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    ...theme.shadows.glow,
   },
   welcomeTitle: {
-    fontSize: theme.typography.sizes.xxl,
+    fontSize: theme.typography.sizes.huge,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
     textAlign: 'center',
+    letterSpacing: -0.8,
   },
   welcomeSubtitle: {
     fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fontFamily,
-    color: theme.colors.textMuted,
+    fontFamily: theme.typography.fontFamilyMedium,
+    color: theme.colors.textSecondary,
     textAlign: 'center',
-    marginTop: 6,
+    marginTop: 8,
+    lineHeight: 22,
+    maxWidth: 300,
   },
   loginCard: {
-    padding: theme.spacing.xl,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 0,
+    padding: theme.spacing.xxl,
+    borderRadius: theme.radius.xl,
     ...theme.shadows.lg,
   },
   submitButton: {
-    marginTop: theme.spacing.md,
+    marginTop: theme.spacing.lg,
   },
   demoNotice: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: theme.spacing.xl,
+    marginTop: theme.spacing.xxl,
     paddingHorizontal: theme.spacing.md,
   },
   demoText: {
     fontSize: 12,
-    fontFamily: theme.typography.fontFamily,
+    fontFamily: theme.typography.fontFamilyMedium,
     color: theme.colors.textMuted,
     marginLeft: 6,
     textAlign: 'center',

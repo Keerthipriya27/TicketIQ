@@ -1,4 +1,9 @@
 {
-  "name": "StudentTaskPlanner",
-  "displayName": "StudentTaskPlanner"
+  "expo": {
+    "name": "TicketIQ",
+    "slug": "TicketIQ",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light"
+  }
 }

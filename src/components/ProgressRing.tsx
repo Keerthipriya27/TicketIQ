@@ -1,70 +1,54 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Animated } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 import { theme } from '../theme';
 
 interface ProgressRingProps {
-  percentage: number; // 0 to 100
+  percentage: number;
   size?: number;
   strokeWidth?: number;
 }
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export const ProgressRing: React.FC<ProgressRingProps> = ({
   percentage = 0,
   size = 120,
   strokeWidth = 12,
 }) => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
-
-  // Circle dimensions
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: percentage,
-      duration: 1000,
-      useNativeDriver: true, // Let's check: native driver can animate custom props in RN, but sometimes it doesn't support strokeDashoffset, so we'll use useNativeDriver: false to be safe.
-    }).start();
-  }, [percentage]);
-
-  const strokeDashoffset = animatedValue.interpolate({
-    inputRange: [0, 100],
-    outputRange: [circumference, 0],
-  });
+  const clamped = Math.max(0, Math.min(100, percentage));
+  const strokeDashoffset = circumference - (circumference * clamped) / 100;
 
   return (
     <View style={[styles.container, { width: size, height: size }]}>
       <Svg width={size} height={size} style={styles.svg}>
         <Defs>
-          <LinearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor={theme.colors.primary} />
-            <Stop offset="100%" stopColor={theme.colors.secondary} />
+          <LinearGradient id="glowRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <Stop offset="0%" stopColor="#6366F1" />
+            <Stop offset="50%" stopColor="#8B5CF6" />
+            <Stop offset="100%" stopColor="#EC4899" />
           </LinearGradient>
         </Defs>
 
-        {/* Background Circle */}
+        {/* Track Circle */}
         <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="#E5E7EB"
+          stroke="#E2E8F0"
           strokeWidth={strokeWidth}
           fill="none"
         />
 
-        {/* Foreground (Progress) Circle */}
-        <AnimatedCircle
+        {/* Progress Arc */}
+        <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="url(#ringGradient)"
+          stroke="url(#glowRingGradient)"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={`${circumference} ${circumference}`}
-          // @ts-ignore
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
@@ -72,8 +56,8 @@ export const ProgressRing: React.FC<ProgressRingProps> = ({
       </Svg>
 
       <View style={styles.textContainer}>
-        <Text style={styles.percentageText}>{`${Math.round(percentage)}%`}</Text>
-        <Text style={styles.labelSubText}>done</Text>
+        <Text style={styles.percentageText}>{`${Math.round(clamped)}%`}</Text>
+        <Text style={styles.labelSubText}>COMPLETED</Text>
       </View>
     </View>
   );
@@ -93,16 +77,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   percentageText: {
-    fontSize: theme.typography.sizes.lg,
+    fontSize: theme.typography.sizes.xl,
     fontFamily: theme.typography.fontFamilyBold,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.heavy,
     color: theme.colors.textPrimary,
+    letterSpacing: -0.5,
   },
   labelSubText: {
-    fontSize: 10,
-    fontFamily: theme.typography.fontFamily,
+    fontSize: 9,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.bold,
     color: theme.colors.textMuted,
-    marginTop: -2,
+    marginTop: 2,
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
 });

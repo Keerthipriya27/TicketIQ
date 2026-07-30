@@ -23,7 +23,6 @@ export const AddTaskScreen = ({ navigation }: any) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   
-  // Date selection states
   const getTodayString = (offsetDays = 0) => {
     const d = new Date();
     d.setDate(d.getDate() + offsetDays);
@@ -83,7 +82,6 @@ export const AddTaskScreen = ({ navigation }: any) => {
 
     setLoading(true);
     try {
-      // Convert YYYY-MM-DD input back to full ISO string
       const isoDueDate = new Date(dueDate).toISOString();
       await taskService.createTask({
         title,
@@ -109,8 +107,7 @@ export const AddTaskScreen = ({ navigation }: any) => {
         style={styles.keyboardView}
       >
         <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-          <Card style={styles.formCard}>
-            {/* Title */}
+          <Card glass style={styles.formCard}>
             <Input
               label="Task Title"
               placeholder="e.g. Prep Chemistry Assignment"
@@ -119,7 +116,6 @@ export const AddTaskScreen = ({ navigation }: any) => {
               error={errors.title}
             />
 
-            {/* Description */}
             <Input
               label="Description (Optional)"
               placeholder="e.g. Review pages 12-25, sketch lab report..."
@@ -130,71 +126,62 @@ export const AddTaskScreen = ({ navigation }: any) => {
               inputStyle={styles.descriptionInput}
             />
 
-            {/* Priority Selector */}
             <View style={styles.section}>
-              <Text style={styles.sectionLabel}>Priority</Text>
+              <Text style={styles.sectionLabel}>PRIORITY LEVEL</Text>
               <View style={styles.chipRow}>
                 <Chip
                   label="High"
                   selected={priority === 'high'}
                   onPress={() => setPriority('high')}
-                  activeColor={theme.colors.priorityHighBg}
-                  activeTextColor={theme.colors.priorityHigh}
+                  activeColor="#FFE4E6"
+                  activeTextColor="#F43F5E"
                   style={styles.flexChip}
                 />
                 <Chip
                   label="Medium"
                   selected={priority === 'medium'}
                   onPress={() => setPriority('medium')}
-                  activeColor={theme.colors.priorityMediumBg}
-                  activeTextColor={theme.colors.priorityMedium}
+                  activeColor="#FEF3C7"
+                  activeTextColor="#D97706"
                   style={styles.flexChip}
                 />
                 <Chip
                   label="Low"
                   selected={priority === 'low'}
                   onPress={() => setPriority('low')}
-                  activeColor={theme.colors.priorityLowBg}
-                  activeTextColor={theme.colors.priorityLow}
+                  activeColor="#D1FAE5"
+                  activeTextColor="#059669"
                   style={styles.flexChip}
                 />
               </View>
             </View>
 
-            {/* Status Selector */}
             <View style={styles.section}>
-              <Text style={styles.sectionLabel}>Status</Text>
+              <Text style={styles.sectionLabel}>INITIAL STATUS</Text>
               <View style={styles.chipRow}>
                 <Chip
                   label="Pending"
                   selected={status === 'pending'}
                   onPress={() => setStatus('pending')}
-                  activeColor={theme.colors.statusPendingBg}
-                  activeTextColor={theme.colors.statusPending}
                   style={styles.flexChip}
                 />
                 <Chip
                   label="In Progress"
                   selected={status === 'in_progress'}
                   onPress={() => setStatus('in_progress')}
-                  activeColor={theme.colors.statusInProgressBg}
-                  activeTextColor={theme.colors.statusInProgress}
                   style={styles.flexChip}
                 />
                 <Chip
                   label="Completed"
                   selected={status === 'completed'}
                   onPress={() => setStatus('completed')}
-                  activeColor={theme.colors.statusCompletedBg}
-                  activeTextColor={theme.colors.statusCompleted}
                   style={styles.flexChip}
                 />
               </View>
             </View>
 
-            {/* Due Date Presets & Picker */}
             <View style={styles.section}>
-              <Text style={styles.sectionLabel}>Due Date</Text>
+              <Text style={styles.sectionLabel}>DUE DATE</Text>
               <View style={styles.chipRow}>
                 <Chip
                   label="Today"
@@ -222,20 +209,18 @@ export const AddTaskScreen = ({ navigation }: any) => {
                 />
               </View>
 
-              {/* Show date manual input if custom is chosen */}
               {selectedDatePreset === 'custom' && (
                 <Input
                   placeholder="YYYY-MM-DD"
                   value={dueDate}
                   onChangeText={setDueDate}
                   error={errors.dueDate}
-                  icon={<Icon name="calendar-range" size={20} color={theme.colors.textMuted} />}
+                  icon={<Icon name="calendar-range" size={20} color="#6366F1" />}
                   containerStyle={styles.customDateInput}
                 />
               )}
             </View>
 
-            {/* Submit */}
             <PrimaryButton
               title="Save Task"
               onPress={handleSubmit}
@@ -262,9 +247,8 @@ const styles = StyleSheet.create({
   },
   formCard: {
     padding: theme.spacing.xl,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 0,
-    ...theme.shadows.md,
+    borderRadius: theme.radius.xl,
+    ...theme.shadows.lg,
   },
   descriptionInput: {
     minHeight: 80,
@@ -275,12 +259,14 @@ const styles = StyleSheet.create({
     marginVertical: theme.spacing.sm,
   },
   sectionLabel: {
-    fontSize: theme.typography.sizes.sm,
-    fontFamily: theme.typography.fontFamilyMedium,
-    fontWeight: theme.typography.weights.medium,
-    color: theme.colors.textPrimary,
-    marginBottom: 6,
+    fontSize: 10,
+    fontFamily: theme.typography.fontFamilyBold,
+    fontWeight: theme.typography.weights.heavy,
+    color: theme.colors.textMuted,
+    marginBottom: 8,
     paddingLeft: 4,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   chipRow: {
     flexDirection: 'row',
@@ -298,7 +284,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
   },
   submitBtn: {
-    marginTop: theme.spacing.lg,
+    marginTop: theme.spacing.xl,
   },
 });
 
