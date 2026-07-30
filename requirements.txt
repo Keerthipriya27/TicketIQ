@@ -1,7 +1,9 @@
 fastapi
 uvicorn
+sqlalchemy
+httpx
+pytest
 requests
 python-dotenv
 pandas
 tenacity
-httpx2
