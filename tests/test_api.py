@@ -64,7 +64,7 @@ def test_analyze_security_ticket(client):
     payload = {"ticket": "Unauthorized login attempt detected on admin account from unknown IP."}
     r = client.post("/analyze", json=payload)
     assert r.status_code == 200
-    assert data_sec := r.json()
+    data_sec = r.json()
     assert data_sec.get("category") == "Account & Security"
 
 def test_analyze_missing_field(client):
